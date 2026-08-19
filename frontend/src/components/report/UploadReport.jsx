@@ -1,246 +1,11 @@
-// import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import api from "../../services/api";
-// import {
-//     showSuccess,
-//     showError,
-// } from "../../utils/sweetAlert";
-
-// function UploadReport() {
-//     const navigate = useNavigate();
-
-//     const [file, setFile] = useState(null);
-//     const [loading, setLoading] = useState(false);
-//     const [message, setMessage] = useState("");
-//     const [error, setError] = useState("");
-
-//     const handleFileChange = (e) => {
-//         const selectedFile = e.target.files[0];
-
-//         setError("");
-//         setMessage("");
-
-//         if (!selectedFile) {
-//             setFile(null);
-//             return;
-//         }
-
-//         const allowedTypes = [
-//             "application/pdf",
-//             "image/jpeg",
-//             "image/png",
-//             "image/jpg",
-//         ];
-
-//         if (!allowedTypes.includes(selectedFile.type)) {
-//             setError("Only PDF, JPG, JPEG and PNG files are allowed.");
-//             setFile(null);
-//             return;
-//         }
-
-//         if (selectedFile.size > 5 * 1024 * 1024) {
-//             setError("File size must be less than 5 MB.");
-//             setFile(null);
-//             return;
-//         }
-
-//         setFile(selectedFile);
-//     };
-
-//     const handleUpload = async (e) => {
-//         e.preventDefault();
-
-//         if (!file) {
-//             setError("Please select a medical report.");
-//             return;
-//         }
-
-//         try {
-//             setLoading(true);
-//             setError("");
-//             setMessage("");
-
-//             const formData = new FormData();
-//             formData.append("report", file);
-
-//             await api.post("/reports/upload", formData);
-
-//             // setMessage("Medical report uploaded successfully!");
-//             showSuccess(
-//                 "Report Uploaded!",
-//                 "Your medical report has been uploaded successfully."
-//             );
-//             setFile(null);
-
-//             setTimeout(() => {
-//                 navigate("/patient/reports");
-//             }, 1000);
-
-//         } catch (error) {
-//             console.error("UPLOAD ERROR:", error);
-//             // setError(
-//             //     error.response?.data?.message ||
-//             //     "Failed to upload report."
-//             // );
-//             showError(
-//                 "Upload Failed",
-//                 error.response?.data?.message ||
-//                     "Failed to upload medical report."
-//             );
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-//     return (
-//         <div className="min-h-screen bg-slate-50 w-full">
-//             {/* Top Navigation - Full Width */}
-//             <nav className="w-full bg-white border-b border-slate-200/80 px-6 sm:px-10 py-4 sticky top-0 z-20">
-//                 <div className="w-full flex items-center justify-between">
-                    
-//                     {/* Brand Logo */}
-//                     <div className="flex items-center gap-3">
-//                         <div className="w-10 h-10 bg-gradient-to-tr from-teal-500 to-cyan-500 text-white rounded-xl flex items-center justify-center shadow-md shadow-teal-500/20">
-//                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h1.5l1.5-3 2 6 1.5-3H17" />
-//                             </svg>
-//                         </div>
-//                         <div>
-//                             <h1 className="text-xl font-bold text-slate-800 tracking-tight leading-none">
-//                                 Medical Report AI
-//                             </h1>
-//                             <span className="text-xs text-teal-600 font-medium">Health Portal</span>
-//                         </div>
-//                     </div>
-
-//                     {/* Back to Reports */}
-//                     <button
-//                         onClick={() => navigate("/patient/reports")}
-//                         className="text-sm font-semibold text-teal-600 hover:text-teal-700 hover:underline flex items-center gap-1 transition"
-//                     >
-//                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-//                         </svg>
-//                         <span>My Reports</span>
-//                     </button>
-//                 </div>
-//             </nav>
-
-//             {/* Main Content Area */}
-//             <main className="w-full p-6 sm:p-10 flex justify-center">
-//                 <div className="w-full max-w-2xl bg-white/90 backdrop-blur-md rounded-2xl shadow-xl shadow-teal-900/5 border border-slate-200/80 p-6 sm:p-8">
-
-//                     {/* Header */}
-//                     <div className="text-center mb-6">
-//                         <div className="inline-flex items-center justify-center w-12 h-12 bg-teal-50 text-teal-600 rounded-2xl mb-3 border border-teal-100">
-//                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-//                             </svg>
-//                         </div>
-//                         <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-800 tracking-tight">
-//                             Upload Medical Report
-//                         </h2>
-//                         <p className="text-slate-500 text-xs sm:text-sm mt-1">
-//                             Upload your medical document in PDF or image format for AI analysis.
-//                         </p>
-//                     </div>
-
-//                     {/* Error Banner */}
-//                     {error && (
-//                         <div className="mb-5 rounded-xl bg-rose-50 border border-rose-200/80 text-rose-700 px-4 py-3 text-xs sm:text-sm flex items-center gap-2">
-//                             <svg className="w-5 h-5 text-rose-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-//                                 <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-//                             </svg>
-//                             <span>{error}</span>
-//                         </div>
-//                     )}
-
-//                     {/* Success Banner */}
-//                     {message && (
-//                         <div className="mb-5 rounded-xl bg-emerald-50 border border-emerald-200/80 text-emerald-700 px-4 py-3 text-xs sm:text-sm flex items-center gap-2">
-//                             <svg className="w-5 h-5 text-emerald-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-//                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-//                             </svg>
-//                             <span>{message}</span>
-//                         </div>
-//                     )}
-
-//                     {/* Upload Form */}
-//                     <form onSubmit={handleUpload}>
-//                         <label className="block group">
-//                             <div className={`border-2 border-dashed rounded-2xl p-8 sm:p-10 text-center transition cursor-pointer flex flex-col items-center justify-center gap-3 ${
-//                                 file 
-//                                     ? "border-teal-500 bg-teal-50/30" 
-//                                     : "border-slate-300 hover:border-teal-500 bg-slate-50/50 hover:bg-teal-50/20"
-//                             }`}>
-//                                 <div className="w-14 h-14 bg-white rounded-2xl shadow-sm border border-slate-200/80 flex items-center justify-center text-teal-600 group-hover:scale-110 transition duration-200">
-//                                     <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-//                                     </svg>
-//                                 </div>
-
-//                                 <div>
-//                                     <p className="font-semibold text-slate-800 text-sm sm:text-base">
-//                                         {file ? file.name : "Choose your medical report"}
-//                                     </p>
-//                                     <p className="text-xs text-slate-400 mt-1">
-//                                         PDF, JPG, JPEG or PNG — Maximum 5 MB
-//                                     </p>
-//                                 </div>
-
-//                                 <input
-//                                     type="file"
-//                                     accept=".pdf,.jpg,.jpeg,.png"
-//                                     onChange={handleFileChange}
-//                                     className="hidden"
-//                                 />
-//                             </div>
-//                         </label>
-
-//                         {/* Submit Button */}
-//                         <button
-//                             type="submit"
-//                             disabled={loading}
-//                             className="w-full mt-6 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-medium py-3 rounded-xl shadow-lg shadow-teal-500/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed text-sm"
-//                         >
-//                             {loading ? (
-//                                 <>
-//                                     <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
-//                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-//                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-//                                     </svg>
-//                                     Uploading & Processing...
-//                                 </>
-//                             ) : (
-//                                 "Upload Report"
-//                             )}
-//                         </button>
-//                     </form>
-
-//                     {/* HIPAA Badge */}
-//                     <div className="mt-6 flex items-center justify-center gap-1.5 text-[11px] text-slate-400 border-t border-slate-100 pt-4">
-//                         <svg className="w-3.5 h-3.5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-//                         </svg>
-//                         <span>256-Bit Encrypted & HIPAA Compliant</span>
-//                     </div>
-
-//                 </div>
-//             </main>
-//         </div>
-//     );
-// }
-
-// export default UploadReport;
-
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
 
 // Import PatientNavbar component
 import PatientNavbar from "../../components/patient/PatientNavbar";
 
+// Import SweetAlert utilities
 import {
     showSuccess,
     showError,
@@ -250,6 +15,8 @@ function UploadReport() {
     const navigate = useNavigate();
 
     // ================= STATE MANAGEMENT =================
+    // State to store authenticated user profile
+    const [user, setUser] = useState(null);
     // State to store the selected file
     const [file, setFile] = useState(null);
     // State to track form loading/processing status
@@ -258,6 +25,27 @@ function UploadReport() {
     const [message, setMessage] = useState("");
     // State for error feedback messages
     const [error, setError] = useState("");
+
+    // Dynamic login authentication check
+    const isLoggedIn = Boolean(user && (user._id || user.name || user.email));
+
+    // ================= FETCH USER PROFILE =================
+    /**
+     * Checks authenticated user session on page load
+     */
+    useEffect(() => {
+        const fetchUserProfile = async () => {
+            try {
+                const response = await api.get("/auth/me");
+                setUser(response.data?.user || response.data || null);
+            } catch (err) {
+                console.warn("User profile fetch failed in upload page:", err);
+                setUser(null);
+            }
+        };
+
+        fetchUserProfile();
+    }, []);
 
     // ================= FILE CHANGE HANDLER =================
     /**
@@ -307,6 +95,15 @@ function UploadReport() {
     const handleUpload = async (e) => {
         e.preventDefault();
 
+        // Guest Guard Check: Trigger popup alert if user is not logged in
+        if (!isLoggedIn) {
+            showError(
+                "Access Restricted",
+                "Please register or login first to upload medical reports."
+            );
+            return;
+        }
+
         // Validation Check: Ensure a file is selected
         if (!file) {
             setError("Please select a medical report.");
@@ -355,7 +152,7 @@ function UploadReport() {
     return (
         <div className="min-h-screen bg-slate-50 w-full">
             {/* Top Navigation Component */}
-            <PatientNavbar />
+            <PatientNavbar user={user} />
 
             {/* Main Content Container */}
             <main className="w-full p-6 sm:p-10 flex justify-center items-center">
@@ -365,7 +162,7 @@ function UploadReport() {
                     <div className="flex items-center justify-between mb-6">
                         <button
                             onClick={() => navigate("/patient/reports")}
-                            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-teal-600 transition-colors bg-white px-4 py-2 rounded-xl shadow-xs border border-slate-200/80"
+                            className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-teal-600 transition-colors bg-white px-4 py-2 rounded-xl shadow-xs border border-slate-200/80 cursor-pointer"
                         >
                             <svg
                                 className="w-4 h-4"
@@ -497,7 +294,7 @@ function UploadReport() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full mt-6 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-medium py-3 rounded-xl shadow-lg shadow-teal-500/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed text-sm"
+                            className="w-full mt-6 bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-medium py-3 rounded-xl shadow-lg shadow-teal-500/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed text-sm cursor-pointer"
                         >
                             {loading ? (
                                 <>

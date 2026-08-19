@@ -30,10 +30,15 @@ function Login() {
             setLoading(true);
             setError("");
 
-            await api.post("/auth/login", formData);
+            const res = await api.post("/auth/login", formData);
+            
+            // Save user details locally so Navbar and Dashboard immediately pick it up
+            if (res.data?.user) {
+                localStorage.setItem("user", JSON.stringify(res.data.user));
+            }
 
-            // JWT is saved automatically in HttpOnly cookie
-            navigate("/patient/dashboard");
+            // Redirect to Dashboard and refresh session state
+            window.location.href = "/";
 
         } catch (error) {
             console.error("LOGIN ERROR:", error);
@@ -55,8 +60,19 @@ function Login() {
             <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan-100/40 rounded-full blur-3xl pointer-events-none" />
 
             {/* Main Login Card */}
-            <div className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl shadow-xl shadow-teal-900/5 border border-slate-200/80 p-6 sm:p-8 relative z-10">
+            <div className="w-full max-w-md bg-white/90 backdrop-blur-md rounded-2xl shadow-xl shadow-teal-900/5 border border-slate-200/80 p-6 sm:p-8 pt-10 sm:pt-10 relative z-10">
                 
+                {/* Back / Close (Cross) Button */}
+                <button
+                    onClick={() => navigate("/")}
+                    title="Close and go to Dashboard"
+                    className="absolute top-3.5 right-3.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 p-1.5 rounded-full transition-all cursor-pointer z-20"
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+
                 {/* Live AI Status Bar */}
                 <div className="flex items-center justify-between bg-emerald-50/80 border border-emerald-200/60 rounded-xl px-3.5 py-2 text-xs text-emerald-800 mb-6">
                     <div className="flex items-center gap-2">
@@ -186,7 +202,7 @@ function Login() {
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-medium py-3 rounded-xl shadow-lg shadow-teal-500/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mt-3"
+                        className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white font-medium py-3 rounded-xl shadow-lg shadow-teal-500/20 transition-all duration-200 flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed mt-3 cursor-pointer"
                     >
                         {loading ? (
                             <>

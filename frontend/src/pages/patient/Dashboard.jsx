@@ -1,211 +1,3 @@
-// import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import api from "../../services/api";
-
-// function Dashboard() {
-//     const navigate = useNavigate();
-
-//     const [user, setUser] = useState(null);
-//     const [loading, setLoading] = useState(true);
-
-//     // Get logged-in user
-//     useEffect(() => {
-//         const fetchUser = async () => {
-//             try {
-//                 const response = await api.get("/users/me");
-//                 setUser(response.data.user);
-//             } catch (error) {
-//                 console.error("GET USER ERROR:", error);
-//                 // If cookie/token is missing or expired
-//                 navigate("/login");
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-
-//         fetchUser();
-//     }, [navigate]);
-
-//     // Logout
-//     const handleLogout = async () => {
-//         try {
-//             await api.post("/auth/logout");
-//             navigate("/login");
-//         } catch (error) {
-//             console.error("LOGOUT ERROR:", error);
-//             navigate("/login");
-//         }
-//     };
-
-//     // Loading State
-//     if (loading) {
-//         return (
-//             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-3">
-//                 <div className="w-10 h-10 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-//                 <p className="text-slate-600 text-sm font-medium">Loading dashboard...</p>
-//             </div>
-//         );
-//     }
-
-//     return (
-//         <div className="min-h-screen bg-slate-50 w-full">
-//             {/* Top Navigation - Full Width */}
-//             <nav className="w-full bg-white border-b border-slate-200/80 px-6 sm:px-10 py-4 sticky top-0 z-20">
-//                 <div className="w-full flex items-center justify-between">
-                    
-//                     {/* Brand Logo */}
-//                     <div className="flex items-center gap-3">
-//                         <div className="w-10 h-10 bg-gradient-to-tr from-teal-500 to-cyan-500 text-white rounded-xl flex items-center justify-center shadow-md shadow-teal-500/20">
-//                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-//                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h1.5l1.5-3 2 6 1.5-3H17" />
-//                             </svg>
-//                         </div>
-//                         <div>
-//                             <h1 className="text-xl font-bold text-slate-800 tracking-tight leading-none">
-//                                 Medical Report AI
-//                             </h1>
-//                             <span className="text-xs text-teal-600 font-medium">Health Portal</span>
-//                         </div>
-//                     </div>
-
-//                     {/* User Profile & Actions */}
-//                     <div className="flex items-center gap-4">
-//                         <span className="text-sm font-medium text-slate-700">
-//                             Hi, {user?.name || "Patient"}
-//                         </span>
-
-//                         <button
-//                             onClick={handleLogout}
-//                             className="bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 px-4 py-2 rounded-xl text-sm font-semibold transition-all"
-//                         >
-//                             Logout
-//                         </button>
-//                     </div>
-//                 </div>
-//             </nav>
-
-//             {/* Main Content Area - Full Width */}
-//             <main className="w-full p-6 sm:p-10">
-                
-//                 <h2 className="text-3xl font-extrabold text-slate-800 tracking-tight">
-//                     Patient Dashboard
-//                 </h2>
-                
-//                 <p className="text-slate-500 text-sm sm:text-base mt-2">
-//                     Welcome to your health monitoring dashboard.
-//                 </p>
-
-//                 {/* Action Buttons */}
-//                 <div className="mt-8 flex flex-wrap gap-4">
-//                     <button
-//                         onClick={() => navigate("/patient/upload-report")}
-//                         className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-teal-500/20 transition-all flex items-center gap-2 text-sm"
-//                     >
-//                         <span>+ Upload Medical Report</span>
-//                     </button>
-
-//                     <button
-//                         onClick={() => navigate("/patient/reports")}
-//                         className="bg-white hover:bg-slate-100 text-teal-700 border border-teal-200 px-6 py-3 rounded-xl font-semibold transition-all shadow-sm text-sm"
-//                     >
-//                         My Reports
-//                     </button>
-//                 </div>
-
-//             </main>
-//         </div>
-//     );
-// }
-
-// export default Dashboard;
-
-// import { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-// import api from "../../services/api";
-// import PatientNavbar from "../../components/patient/PatientNavbar";
-
-// function Dashboard() {
-//     const navigate = useNavigate();
-
-//     const [user, setUser] = useState(null);
-//     const [loading, setLoading] = useState(true);
-
-//     // Get logged-in user
-//     useEffect(() => {
-//         const fetchUser = async () => {
-//             try {
-//                 const response = await api.get("/users/me");
-//                 setUser(response.data.user);
-//             } catch (error) {
-//                 console.error("GET USER ERROR:", error);
-//                 navigate("/login");
-//             } finally {
-//                 setLoading(false);
-//             }
-//         };
-
-//         fetchUser();
-//     }, [navigate]);
-
-//     // Loading State
-//     if (loading) {
-//         return (
-//             <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 gap-3">
-//                 <div className="w-10 h-10 border-4 border-teal-500 border-t-transparent rounded-full animate-spin"></div>
-
-//                 <p className="text-slate-600 text-sm font-medium">
-//                     Loading dashboard...
-//                 </p>
-//             </div>
-//         );
-//     }
-
-//     return (
-//         <div className="min-h-screen bg-slate-50 w-full">
-
-//             {/* Common Patient Navbar */}
-//             <PatientNavbar user={user} />
-
-//             {/* Main Content */}
-//             <main className="w-full p-6 sm:p-10">
-
-//                 <h2 className="text-3xl font-extrabold text-slate-800 tracking-tight">
-//                     Patient Dashboard
-//                 </h2>
-
-//                 <p className="text-slate-500 text-sm sm:text-base mt-2">
-//                     Welcome to your health monitoring dashboard.
-//                 </p>
-
-//                 {/* Action Buttons */}
-//                 <div className="mt-8 flex flex-wrap gap-4">
-
-//                     {/* Upload Report */}
-//                     <button
-//                         onClick={() => navigate("/patient/upload-report")}
-//                         className="bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-teal-500/20 transition-all flex items-center gap-2 text-sm"
-//                     >
-//                         <span>+ Upload Medical Report</span>
-//                     </button>
-
-//                     {/* My Reports */}
-//                     <button
-//                         onClick={() => navigate("/patient/reports")}
-//                         className="bg-white hover:bg-slate-100 text-teal-700 border border-teal-200 px-6 py-3 rounded-xl font-semibold transition-all shadow-sm text-sm"
-//                     >
-//                         My Reports
-//                     </button>
-
-//                 </div>
-
-//             </main>
-//         </div>
-//     );
-// }
-
-// export default Dashboard;
-
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../services/api";
@@ -217,14 +9,18 @@ function Dashboard() {
     const navigate = useNavigate();
 
     // ================= STATE MANAGEMENT =================
+    // State to store logged-in user profile
     const [user, setUser] = useState(null);
+    // State to store reports list
     const [reports, setReports] = useState([]);
+    // State to manage loading state
     const [loading, setLoading] = useState(true);
+    // State to manage error messages
     const [errorMsg, setErrorMsg] = useState("");
 
     // ================= FETCH DASHBOARD DATA =================
     /**
-     * Safely fetches user details and patient medical reports
+     * Safely fetches user profile details and patient reports
      */
     const fetchDashboardData = async () => {
         try {
@@ -236,7 +32,7 @@ function Dashboard() {
                 const userResponse = await api.get("/auth/me");
                 setUser(userResponse.data?.user || userResponse.data || null);
             } catch (err) {
-                console.warn("User profile fetch failed, using fallback:", err);
+                console.warn("User profile fetch failed, using guest view:", err);
             }
 
             // 2. Fetch Reports safely
@@ -245,7 +41,6 @@ function Dashboard() {
                 setReports(reportsResponse.data?.reports || reportsResponse.data || []);
             } catch (err) {
                 console.error("Reports fetch error:", err);
-                setErrorMsg("Unable to load latest medical reports.");
             }
 
         } catch (error) {
@@ -262,43 +57,43 @@ function Dashboard() {
         fetchDashboardData();
     }, []);
 
-    // Calculated Statistics with flexible status checks
+    // Derived statistics calculation
     const totalReports = reports.length;
     
-    // Analyzed / Completed count
+    // Calculate Analyzed / Completed reports count
     const analyzedCount = reports.filter((r) => {
         const status = r.status?.toLowerCase() || "";
         return status === "analyzed" || status === "completed";
     }).length;
 
-    // Pending / Processing / Uploaded count
+    // Calculate Pending / Processing / Uploaded reports count
     const pendingCount = reports.filter((r) => {
         const status = r.status?.toLowerCase() || "";
         return (
             status === "pending" || 
             status === "processing" || 
             status === "uploaded" || 
-            !status // Status empty hone par bhi pending manega
+            !status
         );
     }).length;
 
     return (
         <div className="min-h-screen bg-slate-100 text-slate-800 w-full relative flex flex-col font-sans">
             
-            {/* Top Navigation Bar */}
+            {/* Top Navigation Component */}
             <PatientNavbar user={user} />
 
-            {/* Main Content Body */}
-            <main className="flex-1 w-full max-w-8xl mx-auto p-4 sm:p-8">
+            {/* Main Content Area */}
+            <main className="flex-1 w-full max-w-7xl mx-auto p-4 sm:p-8">
 
-                {/* API Warning Toast (If data fails) */}
+                {/* Error Banner Notification */}
                 {errorMsg && (
                     <div className="mb-6 p-4 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-sm flex items-center justify-between shadow-xs">
                         <div className="flex items-center gap-2">
                             <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                             </svg>
-                            <span>{errorMsg} Check your backend connection or refresh.</span>
+                            <span>{errorMsg}</span>
                         </div>
                         <button onClick={fetchDashboardData} className="text-xs font-bold underline cursor-pointer hover:text-amber-900">
                             Retry
@@ -306,13 +101,13 @@ function Dashboard() {
                     </div>
                 )}
 
-                {/* ================= HERO BANNER WITH MEDICAL GRAPHIC BG ================= */}
+                {/* HERO BANNER SECTION */}
                 <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-teal-600 via-cyan-600 to-teal-700 text-white p-8 sm:p-12 shadow-xl shadow-teal-600/10 mb-8">
                     
-                    {/* Background Pattern Graphic Overlay */}
+                    {/* Background Pattern Overlay */}
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent)] pointer-events-none"></div>
                     
-                    {/* Medical Stethoscope/Heartbeat Graphic SVG Background */}
+                    {/* Background Medical Heartbeat SVG Illustration */}
                     <div className="absolute -right-8 -bottom-10 opacity-20 pointer-events-none hidden sm:block">
                         <svg className="w-96 h-96 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -336,7 +131,7 @@ function Dashboard() {
                             Upload your clinical test reports to instantly analyze abnormal parameter values and receive AI-guided health insights.
                         </p>
 
-                        {/* Action Callouts */}
+                        {/* Action Callout Buttons */}
                         <div className="mt-8 flex flex-wrap items-center gap-4">
                             <button
                                 onClick={() => navigate("/patient/upload-report")}
@@ -358,10 +153,10 @@ function Dashboard() {
                     </div>
                 </div>
 
-                {/* ================= DASHBOARD METRICS CARDS ================= */}
+                {/* METRICS STATS CARDS */}
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
                     
-                    {/* Total Reports */}
+                    {/* Total Documents Metric Card */}
                     <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs flex items-center gap-4 hover:border-teal-400 transition-all duration-200">
                         <div className="w-14 h-14 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center border border-teal-100 flex-shrink-0">
                             <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -374,7 +169,7 @@ function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Analyzed */}
+                    {/* Analyzed Reports Metric Card */}
                     <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs flex items-center gap-4 hover:border-emerald-400 transition-all duration-200">
                         <div className="w-14 h-14 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center border border-emerald-100 flex-shrink-0">
                             <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -387,7 +182,7 @@ function Dashboard() {
                         </div>
                     </div>
 
-                    {/* Pending */}
+                    {/* Pending Reports Metric Card */}
                     <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs flex items-center gap-4 hover:border-amber-400 transition-all duration-200">
                         <div className="w-14 h-14 bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center border border-amber-100 flex-shrink-0">
                             <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -402,7 +197,7 @@ function Dashboard() {
 
                 </div>
 
-                {/* ================= RECENT DOCUMENTS SECTION (MAX 2 DOCUMENTS) ================= */}
+                {/* RECENT DOCUMENTS SECTION (DISPLAYING MAXIMUM 2 DOCUMENTS) */}
                 <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xs">
                     <div className="flex items-center justify-between mb-6">
                         <div>
@@ -441,7 +236,7 @@ function Dashboard() {
                         </div>
                     ) : (
                         <div className="grid gap-3">
-                            {/* Slice to show maximum 2 documents only */}
+                            {/* Slice array to limit view to maximum 2 items */}
                             {reports.slice(0, 2).map((report) => (
                                 <div
                                     key={report._id}
@@ -479,5 +274,4 @@ function Dashboard() {
 }
 
 export default Dashboard;
-
 
