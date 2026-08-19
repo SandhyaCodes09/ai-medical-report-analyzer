@@ -59,7 +59,7 @@ function PatientNavbar({ user }) {
 
                     <div>
                         <h1 className="text-xl font-bold text-slate-800 tracking-tight leading-none">
-                            Medical Report AI
+                            MediSense AI
                         </h1>
                         <span className="text-xs text-teal-600 font-medium">
                             Health Portal
